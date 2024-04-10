@@ -14,3 +14,7 @@ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
 .null { color: magenta; }
 .key { color: red; }
 
+.card {
+  background: white;
+  padding: 12px;
+}

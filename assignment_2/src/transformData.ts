@@ -102,30 +102,72 @@ const onFetchAPI = async (url: string) => {
     return jsonRes.users
 }
 
-// ยืมมาใช้จาก https://jsfiddle.net/KJQ9K/554/
-const syntaxHighlight = (json: string) => {
-  json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-      var cls = 'number';
-      if (/^"/.test(match)) {
-          if (/:$/.test(match)) {
-              cls = 'key';
-          } else {
-              cls = 'string';
-          }
-      } else if (/true|false/.test(match)) {
-          cls = 'boolean';
-      } else if (/null/.test(match)) {
-          cls = 'null';
-      }
-      return '<span class="' + cls + '">' + match + '</span>';
-  });
-}
+// // ยืมมาใช้จาก https://jsfiddle.net/KJQ9K/554/
+// const syntaxHighlight = (json: string) => {
+//   json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+//   return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+//       var cls = 'number';
+//       if (/^"/.test(match)) {
+//           if (/:$/.test(match)) {
+//               cls = 'key';
+//           } else {
+//               cls = 'string';
+//           }
+//       } else if (/true|false/.test(match)) {
+//           cls = 'boolean';
+//       } else if (/null/.test(match)) {
+//           cls = 'null';
+//       }
+//       return '<span class="' + cls + '">' + match + '</span>';
+//   });
+// }
 
-export const renderData = async (element: HTMLButtonElement) => {
+export const renderData = async (element: Element) => {
   const users = await onFetchAPI(API_URL)
   const transformData = await handleTransformData(users)
 
-    element.innerHTML = syntaxHighlight(JSON.stringify(transformData, undefined, 4))
-  }
+  const departments = Object.keys(transformData)
+
+  departments.map(dept => {
+    const cardElement = document.createElement('div')
+    cardElement.className = 'card'
+
+    const subDeptTitleElement = document.createElement('div')
+    subDeptTitleElement.innerText = `"${dept}": {`
+
+    const subMaleElement = document.createElement('div')
+    subMaleElement.innerText = `"male": ${JSON.stringify(transformData[dept].male, undefined, 4)},`
+    subMaleElement.style.paddingLeft = '16px' 
+
+    const subFemaleElement = document.createElement('div')
+    subFemaleElement.innerText = `"female": ${JSON.stringify(transformData[dept].female, undefined, 4)},`
+    subFemaleElement.style.paddingLeft = '16px' 
+
+    const subAgeRangeElement = document.createElement('div')
+    subAgeRangeElement.innerText = `"ageRange": ${JSON.stringify(transformData[dept].ageRange, undefined, 4)},`
+    subAgeRangeElement.style.paddingLeft = '16px' 
+
+    const subHairElement = document.createElement('div')
+    subHairElement.innerText = `"hair": ${JSON.stringify(transformData[dept].hair, undefined, 4)},`
+    subHairElement.style.paddingLeft = '16px' 
+
+    const subAddressUserElement = document.createElement('div')
+    subAddressUserElement.innerText = `"addressUser": ${JSON.stringify(transformData[dept].addressUser, undefined, 4)},`
+    subAddressUserElement.style.paddingLeft = '16px' 
+    subAddressUserElement.style.wordBreak = 'break-word' 
+
+    const closeElement = document.createElement('div')
+    closeElement.innerText = `}`
+
+    cardElement.appendChild(subDeptTitleElement)
+    cardElement.appendChild(subMaleElement)    
+    cardElement.appendChild(subFemaleElement) 
+    cardElement.appendChild(subAgeRangeElement) 
+    cardElement.appendChild(subHairElement) 
+    cardElement.appendChild(subAddressUserElement) 
+    cardElement.appendChild(closeElement) 
+
+    element.appendChild(cardElement)    
+  })
+}
 
