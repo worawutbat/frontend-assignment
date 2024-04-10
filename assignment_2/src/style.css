@@ -1,8 +1,10 @@
 body {
   background: black;
-  margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  width: 764px;
+  margin: auto;
+  margin-top: 32px;
 }
 
 pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }

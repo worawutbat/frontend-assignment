@@ -126,6 +126,6 @@ export const renderData = async (element: HTMLButtonElement) => {
   const users = await onFetchAPI(API_URL)
   const transformData = await handleTransformData(users)
 
-    element.innerHTML = syntaxHighlight(JSON.stringify(transformData))
+    element.innerHTML = syntaxHighlight(JSON.stringify(transformData, undefined, 4))
   }
 
